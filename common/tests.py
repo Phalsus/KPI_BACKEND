@@ -157,3 +157,30 @@ class CommonModuleTests(TestCase):
         # regular_user doesn't have view_supportincident permission -> 403 Forbidden
         auth_resp = auth_client.get('/api/v1/support/incidents/')
         self.assertEqual(auth_resp.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_default_admin_command(self):
+        import os
+        from unittest.mock import patch
+
+        # 1. When users exist (from setUp), command should skip
+        call_command('create_default_admin')
+        # Total users created in setUp was 3 (superuser, regular_user, exec_user)
+        self.assertEqual(User.objects.filter(username='env_admin').count(), 0)
+
+        # 2. When database has no users, command creates user from env
+        User.objects.all().delete()
+        self.assertEqual(User.objects.count(), 0)
+
+        with patch.dict(os.environ, {
+            'DJANGO_SUPERUSER_USERNAME': 'env_admin',
+            'DJANGO_SUPERUSER_EMAIL': 'env_admin@example.com',
+            'DJANGO_SUPERUSER_PASSWORD': 'EnvPassword123!'
+        }):
+            call_command('create_default_admin')
+
+        created_admin = User.objects.filter(username='env_admin').first()
+        self.assertIsNotNone(created_admin)
+        self.assertTrue(created_admin.is_superuser)
+        self.assertTrue(created_admin.is_staff)
+        self.assertTrue(created_admin.check_password('EnvPassword123!'))
+

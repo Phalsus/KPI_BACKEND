@@ -13,3 +13,6 @@ python manage.py migrate
 
 # Initialize or update functional role groups and permissions
 python manage.py setup_roles
+
+# Create default admin from environment if no user exists
+python manage.py create_default_admin
