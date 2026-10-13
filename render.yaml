@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: kpi-portal-backend
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn config.wsgi:application"
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: CORS_ALLOW_ALL_ORIGINS
+        value: "True"

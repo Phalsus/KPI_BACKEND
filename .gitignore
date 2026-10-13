@@ -1,0 +1,38 @@
+# Python / Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+Virtual/
+venv/
+.venv/
+env/
+ENV/
+
+# Secrets & Environment Variables
+.env
+.env.local
+
+# Django Database & Staticfiles
+*.sqlite3
+db.sqlite3
+staticfiles/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Generated
+.DS_Store
+Thumbs.db
+
+#AGENT
+.agent/*
+.agent/
+.AGENTS/*
+.AGENTS/
